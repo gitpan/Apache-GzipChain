@@ -1,6 +1,7 @@
-Changes
+ChangeLog
 GzipChain.pm
 MANIFEST
 Makefile.PL
 PassFile.pm
 README
+t/loadme.t
