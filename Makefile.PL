@@ -4,6 +4,8 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
 	      'NAME'	=> 'Apache::GzipChain',
 	      'VERSION_FROM' => 'GzipChain.pm', # finds $VERSION
+	      'PREREQ_PM' => {'Compress::Zlib' => 1.0,
+			      'Apache::OutputChain' => 0.0 },
 	      dist => {
 		       PREOP => 'co -l README && pod2text GzipChain.pm > README && ci -u README',
 		       SUFFIX => 'gz',

@@ -1,5 +1,11 @@
-Revision history for Perl extension Apache::GzipChain.
+=head1 Revision history for Perl extension Apache::GzipChain.
 
-0.01  Thu Oct 16 10:36:50 1997
-	- original version; created by h2xs 1.18
+=head2 0.02  Nov 29, 1997
+	
+Improved User-Agent regex for speed. Added the check for the
+Accept-Encoding header. Improved documentation.
+
+=head2 0.01  Nov 28, 1997
+
+original version;
 

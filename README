@@ -1,0 +1,47 @@
+NAME
+    Apache::GzipChain - compress HTML in the OutputChain
+
+SYNOPSIS
+    In the configuration of your apache add something like
+
+        <Files *.html>
+        SetHandler perl-script
+        PerlHandler Apache::OutputChain Apache::GzipChain Apache::PassHtml
+        </Files>
+
+STATUS
+    This module is alpha software. Occasional SEGV have been observed. Use
+    with caution!
+
+DESCRIPTION
+    This module compresses any output from another perl handler if and only
+    if the browser understands gzip encoding. To determine if the browser is
+    able to understand us we check both its *Accept-Encoding* header and its
+    *User-Agent* header. We check the latter because too few browsers send
+    the header *Accept-Encoding* header currently. Instead I have set up an
+    enquiry form at http://www.kulturbox.de/perl/test/content-encoding-gzip
+    where many users can check their browsers' abilities and leave a
+    message. Thus we can test a regular expression against the *User-Agent*
+    header.
+
+    The module seems to work without influencing the other handlers. The
+    only thing that can be noticed by the other handler is that the response
+    header 'Content-Encoding' has been set. If GzipChain decides not to do
+    any compression, it just declines and doesn't even register itself for
+    the output chain.
+
+    GzipChain compresses every single buffer content it receives via the
+    output chain separately according to the GZIP specification (RFC 1952).
+    The compression ratio therefore suffers if the other module sends its
+    data in very small chunks. It is recommended that you use as few as
+    possible print statements in conjunction with the GzipChain. The
+    Apache::PassFile module is an example of an efficient file reader for
+    this purpose.
+
+PREREQUISITES
+    Compress::Zlib, Apache::OutputChain
+
+AUTHOR
+    Andreas Koenig, koenig@kulturbox.de based on code from Jan Pazdziora,
+    adelton@fi.muni.cz
+
