@@ -2,7 +2,7 @@ package Apache::GzipChain;
 use Compress::Zlib 1.0;
 use strict;
 use vars qw(@ISA $VERSION);
-$VERSION = "0.04";
+$VERSION = "0.06";
 
 use Apache::OutputChain;
 @ISA = qw( Apache::OutputChain );
@@ -10,6 +10,12 @@ use Apache::OutputChain;
 sub handler {
   my($r) = shift;
   my($can_gzip);
+  my @vary = $r->header_out('Vary') if $r->header_out('Vary');
+  push @vary, "Accept-Encoding", "User-Agent";
+  $r->header_out('Vary',
+		 join ", ",
+		 @vary
+		);
   my($accept_encoding) = $r->header_in("Accept-Encoding");
   $can_gzip = 1 if index($accept_encoding,"gzip")>=0;
   unless ($can_gzip) {
@@ -21,15 +27,8 @@ sub handler {
 			 \d+
 			 [\s\[\]\w\-]+
 			 (
-			  WebTV |
-			  (
-			   \(
-			   \b(
-			      X11 |
-			      compat.+MSIE\s4\.0 |
-			      Macint.+PPC,\sNav
-			     )\b
-			  )
+			  \(X11 |
+			  Macint.+PPC,\sNav
 			 )
 			}x
        ) {
@@ -39,8 +38,6 @@ sub handler {
   if ($can_gzip) {
     $r->header_out('Content-Encoding','gzip');
     Apache::OutputChain::handler($r, 'Apache::GzipChain');
-  } else {
-    warn "GzipChain thinks: cannot gzip";
   }
 }
 

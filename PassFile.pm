@@ -5,7 +5,7 @@ use strict;
 use vars qw($VERSION $BUFFERSIZE);
 $BUFFERSIZE = 16384;
 
-$VERSION = "0.04";
+$VERSION = "0.05";
 
 sub BUFFERSIZE {
   my($self,$new) = @_;
@@ -21,6 +21,11 @@ sub handler {
   if (-f $filename and
       -r _ and
       $fh = FileHandle->new($filename)) {
+    unless ($r->dir_config('no_mtime')) {
+      my $mtime = (stat _)[9];
+      require HTTP::Date;
+      $r->header_out('Last-Modified',HTTP::Date::time2str($mtime));
+    }
     $r->send_http_header;
     my($buf,$read);
     local $\;
@@ -65,6 +70,13 @@ this module becomes obsolete.
 PassFile reads files from disk in chunks of size BUFFERSIZE.
 BUFFERSIZE is a global variable that can be set via the BUFFERSIZE
 method. The default value is 16384.
+
+=head1 CONFIGURATION
+
+Per default the module sets the C<Last Modified> header. It requires
+HTTP::Date in order to do so. You can suppress that by setting
+
+    PerlSetVar no_mtime true
 
 =head1 AUTHOR
 

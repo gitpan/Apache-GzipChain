@@ -1,26 +1,31 @@
 NAME
-    Apache::GzipChain - compress HTML in the OutputChain
+    Apache::GzipChain - compress HTML (or anything) in the OutputChain
 
 SYNOPSIS
     In the configuration of your apache add something like
 
         <Files *.html>
         SetHandler perl-script
-        PerlHandler Apache::OutputChain Apache::GzipChain Apache::PassHtml
+        PerlHandler Apache::OutputChain Apache::GzipChain Apache::PassFile
         </Files>
 
 STATUS
     This module is alpha software. Occasional SEGV have been observed. Use
     with caution!
 
+    You currently cannot mix perl's own `print' statements that print to
+    STDOUT and the `print' or `write_client' methods in Apache.pm. If you do
+    that, you will very likely encounter empty documents and probably core
+    dumps too.
+
 DESCRIPTION
     This module compresses any output from another perl handler if and only
     if the browser understands gzip encoding. To determine if the browser is
     able to understand us we check both its *Accept-Encoding* header and its
     *User-Agent* header. We check the latter because too few browsers send
-    the header *Accept-Encoding* header currently. Instead I have set up an
-    enquiry form at http://www.kulturbox.de/perl/test/content-encoding-gzip
-    where many users can check their browsers' abilities and leave a
+    the *Accept-Encoding* header currently. Instead I have set up an enquiry
+    form at http://www.kulturbox.de/perl/test/content-encoding-gzip where
+    many users already have checked their browsers' abilities and left a
     message. Thus we can test a regular expression against the *User-Agent*
     header.
 
@@ -33,8 +38,8 @@ DESCRIPTION
     GzipChain compresses every single buffer content it receives via the
     output chain separately according to the GZIP specification (RFC 1952).
     The compression ratio therefore suffers if the other module sends its
-    data in very small chunks. It is recommended that you use as few as
-    possible print statements in conjunction with the GzipChain. The
+    data in very small chunks. It is recommended that you use as few print
+    statements as possible in conjunction with the GzipChain. The
     Apache::PassFile module is an example of an efficient file reader for
     this purpose.
 
@@ -42,6 +47,6 @@ PREREQUISITES
     Compress::Zlib, Apache::OutputChain
 
 AUTHOR
-    Andreas Koenig, koenig@kulturbox.de based on code from Jan Pazdziora,
+    Andreas Koenig, koenig@kulturbox.de based on code by Jan Pazdziora,
     adelton@fi.muni.cz
 
