@@ -2,7 +2,7 @@ package Apache::GzipChain;
 use Compress::Zlib 1.0;
 use strict;
 use vars qw(@ISA $VERSION);
-$VERSION = sprintf "%d.%02d", q$Revision: 1.13 $ =~ /(\d+).(\d+)/;
+$VERSION = sprintf "%d.%02d", q$Revision: 1.14 $ =~ /(\d+).(\d+)/;
 
 use Apache::OutputChain;
 @ISA = qw( Apache::OutputChain );
@@ -103,5 +103,10 @@ Compress::Zlib, Apache::OutputChain
 
 Andreas Koenig, koenig@kulturbox.de based on code by Jan Pazdziora,
 adelton@fi.muni.cz
+
+=head1 LICENSE
+
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
 
 =cut

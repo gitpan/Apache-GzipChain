@@ -83,6 +83,10 @@ HTTP::Date in order to do so. You can suppress that by setting
 (c) 1997 Jan Pazdziora, adelton@fi.muni.cz, at Faculty of Informatics,
 Masaryk University, Brno (small performance changes by Andreas Koenig)
 
+=head1 LICENSE
+
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
 
 =cut
 

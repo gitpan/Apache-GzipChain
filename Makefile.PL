@@ -4,10 +4,21 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
 	      'NAME'	=> 'Apache::GzipChain',
 	      'VERSION_FROM' => 'GzipChain.pm', # finds $VERSION
+              depend => { Makefile => '$(VERSION_FROM)' },
 	      'PREREQ_PM' => {'Compress::Zlib' => 1.0,
 			      'Apache::OutputChain' => 0.04 },
 	      dist => {
-		       PREOP => 'co -l README && pod2text GzipChain.pm > README && ci -u README',
+                       DIST_DEFAULT => 'README all tardist',
+                       COMPRESS => 'gzip -9f'
+		       # PREOP => 'co -l README && pod2text GzipChain.pm > README && ci -u README',
 		      }
 );
 
+sub MY::postamble {
+  q{
+README: GzipChain.pm Makefile
+	chmod +w $@
+	pod2text GzipChain.pm > $@
+
+}
+}

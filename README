@@ -49,3 +49,7 @@ AUTHOR
     Andreas Koenig, koenig@kulturbox.de based on code by Jan Pazdziora,
     adelton@fi.muni.cz
 
+LICENSE
+    This program is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+

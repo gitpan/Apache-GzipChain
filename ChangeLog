@@ -1,3 +1,7 @@
+2003-03-03  Andreas J. Koenig  <andreas.koenig@anima.de>
+
+	* Added a license statement on request of Steve Hay
+
 2002-08-26  Andreas J. Koenig  <andreas.koenig@anima.de>
 
 	* Added washing off of UTF-8 flag by Encode if $] > 5.007
