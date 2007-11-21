@@ -2,7 +2,7 @@ package Apache::GzipChain;
 use Compress::Zlib 1.0;
 use strict;
 use vars qw(@ISA $VERSION);
-$VERSION = sprintf "%d.%02d", q$Revision: 1.14 $ =~ /(\d+).(\d+)/;
+$VERSION = "1.20";
 
 use Apache::OutputChain;
 @ISA = qw( Apache::OutputChain );
@@ -33,10 +33,9 @@ sub PRINT {
   my $self = shift;
   my $res = join "", @_;
   return unless length($res);
-  if ($] > 5.007) {
-    require Encode;
-    $res = Encode::encode_utf8($res); # noop if $res doesn't have the UTF-8 flag set
-  }
+  # srezic in RT 28732: Maybe it would also be appropriate to issue
+  # a warning a la "wide character in PRINT", because I consider it
+  # an error to have utf8-flagged characters in this stage.
   $self->Apache::OutputChain::PRINT(Compress::Zlib::memGzip($res));
 }
 
@@ -90,10 +89,11 @@ which case the output is the same for all user agents.
 
 =head1 Unicode
 
-Using this module under perl-5.8 or higher is ok for Unicode data.
-UTF-8 data passed to Compress::Zlib::memGzip() are converted to raw
-UTF-8 before compression takes place. Other data are simply passed
-through.
+To use this module under perl-5.8 or higher with Unicode data you have
+to convert to octets before printing them. Something like this will
+do:
+
+  Encode::encode_utf8($res);
 
 =head1 PREREQUISITES
 
@@ -101,8 +101,7 @@ Compress::Zlib, Apache::OutputChain
 
 =head1 AUTHOR
 
-Andreas Koenig, koenig@kulturbox.de based on code by Jan Pazdziora,
-adelton@fi.muni.cz
+Andreas Koenig, based on code by Jan Pazdziora
 
 =head1 LICENSE
 

@@ -38,16 +38,16 @@ HEADERS
     case the output is the same for all user agents.
 
 Unicode
-    Using this module under perl-5.8 or higher is ok for Unicode data. UTF-8
-    data passed to Compress::Zlib::memGzip() are converted to raw UTF-8
-    before compression takes place. Other data are simply passed through.
+    To use this module under perl-5.8 or higher with Unicode data you have
+    to convert to octets before printing them. Something like this will do:
+
+      Encode::encode_utf8($res);
 
 PREREQUISITES
     Compress::Zlib, Apache::OutputChain
 
 AUTHOR
-    Andreas Koenig, koenig@kulturbox.de based on code by Jan Pazdziora,
-    adelton@fi.muni.cz
+    Andreas Koenig, based on code by Jan Pazdziora
 
 LICENSE
     This program is free software; you can redistribute it and/or modify it
